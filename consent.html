@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://gggalauujrympyogdjoj.supabase.co; img-src 'self'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Second brain sign-in</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>Second brain</h1>
+  <p class="muted" id="status">Loading…</p>
+
+  <section id="signin" hidden>
+    <p>Sign in to approve this connection. You get a sign-in link by email.</p>
+    <form id="signin-form">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <button type="submit">Send sign-in link</button>
+    </form>
+    <p class="muted">Open the link in this same browser.</p>
+  </section>
+
+  <section id="consent" hidden>
+    <p><strong id="client-name"></strong> wants to use your second brain.</p>
+    <dl>
+      <dt>Returns to</dt><dd id="redirect-uri"></dd>
+      <dt>Signed in as</dt><dd id="who"></dd>
+    </dl>
+    <p class="warn" id="refused" hidden>This app does not return to claude.ai, so this page will not approve it. If you did not just add a connector in Claude, deny it.</p>
+    <div class="buttons">
+      <button id="approve" type="button">Approve</button>
+      <button id="deny" type="button" class="secondary">Deny</button>
+    </div>
+  </section>
+
+  <p class="error" id="error" hidden></p>
+  <p><button id="signout" type="button" class="link" hidden>Sign out</button></p>
+</main>
+<script src="vendor/supabase-js-2.117.3.js"></script>
+<script src="consent.js"></script>
+</body>
+</html>
