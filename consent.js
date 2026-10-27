@@ -1,4 +1,4 @@
-// Consent page for the second brain's kg connector (Supabase Auth OAuth 2.1 server).
+// OAuth consent page.
 // Static page: the project URL and publishable key below are public by design;
 // the key alone can read or run nothing in the database.
 'use strict';
@@ -6,7 +6,7 @@
 const SUPABASE_URL = 'https://gggalauujrympyogdjoj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_YP-XJ04Ki1UOFer_cOodGg_gQoUNWuP';
 
-// The only places an approval may send you back to: Claude's connector callback.
+// The only places an approval may send you back to.
 const ALLOWED_CALLBACKS = [
   'https://claude.ai/api/mcp/auth_callback',
   'https://claude.com/api/mcp/auth_callback',
@@ -37,7 +37,7 @@ function recall(key) {
 }
 
 function goBack(url) {
-  if (!isAllowedCallback(url)) { fail('Refused: the answer would go to ' + url + ', not to Claude.'); return; }
+  if (!isAllowedCallback(url)) { fail('Refused: the answer would go to ' + url + ', which is not allowed.'); return; }
   store(PENDING_KEY, null);
   window.location.assign(url);
 }
@@ -59,7 +59,7 @@ async function main() {
   if (user) { $('signout').hidden = false; }
 
   if (!authId) {
-    status(user ? 'Signed in. Nothing to approve: start from “Connect” in Claude.' : 'Nothing to approve: start from “Connect” in Claude.');
+    status(user ? 'Signed in. Nothing to approve.' : 'Nothing to approve.');
     return;
   }
 
@@ -79,9 +79,9 @@ async function main() {
   }
 
   const { data, error } = await sb.auth.oauth.getAuthorizationDetails(authId);
-  if (error || !data) { store(PENDING_KEY, null); fail((error && error.message) || 'This request has expired. Start again from Claude.'); return; }
+  if (error || !data) { store(PENDING_KEY, null); fail((error && error.message) || 'This request has expired. Start again.'); return; }
 
-  // Approved before: Supabase returns where to go next.
+  // Approved before: the server returns where to go next.
   if (!('authorization_id' in data)) { goBack(data.redirect_url); return; }
 
   status('');
